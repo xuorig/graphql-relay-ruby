@@ -46,13 +46,19 @@ BaseType.define_connection do
   end
 end
 
+ShipEdgeType = GraphQL::Relay::Edge.create_type(Ship) do
+  field :since do
+    type types.String
+    resolve -> (_, _, _) { 'forever' }
+  end
+end
 
 Faction = GraphQL::ObjectType.define do
   name "Faction"
   interfaces [NodeIdentification.interface]
   field :id, field: GraphQL::Relay::GlobalIdField.new("Faction")
   field :name, types.String
-  connection :ships, Ship.connection_type do
+  connection :ships, Ship.connection_type(edge_type: ShipEdgeType) do
     # Resolve field should return an Array, the Connection
     # will do the rest!
     resolve -> (obj, args, ctx) {

@@ -15,6 +15,7 @@ describe GraphQL::Relay::ArrayConnection do
         rebels {
           ships(first: $first, after: $after, last: $last, before: $before, order: $order, nameIncludes: $nameIncludes) {
             edges {
+              since
               cursor
               node {
                 name
@@ -27,6 +28,11 @@ describe GraphQL::Relay::ArrayConnection do
         }
       }
     |}
+ 
+    it 'handles extra edge fields' do
+      result = query(query_string, "first" => 2)
+      assert_equal('forever', result["data"]["rebels"]["ships"]["edges"][0]["since"])
+    end
 
     it 'limits the result' do
       result = query(query_string, "first" => 2)

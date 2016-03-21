@@ -14,11 +14,12 @@ module GraphQL
         @cursor ||= @connection.cursor_from_node(node)
       end
 
-      def self.create_type(wrapped_type)
+      def self.create_type(wrapped_type, &block)
         GraphQL::ObjectType.define do
           name("#{wrapped_type.name}Edge")
           field :node, wrapped_type
           field :cursor, !types.String
+          block && instance_eval(&block)
         end
       end
     end

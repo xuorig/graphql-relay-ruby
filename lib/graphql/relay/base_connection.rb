@@ -19,8 +19,8 @@ module GraphQL
       CONNECTION_IMPLEMENTATIONS = {}
 
       # Create a connection which exposes edges of this type
-      def self.create_type(wrapped_type, &block)
-        edge_type = wrapped_type.edge_type
+      def self.create_type(wrapped_type, edge_type: nil, &block)
+        edge_type = edge_type || wrapped_type.edge_type
 
         connection_type = ObjectType.define do
           name("#{wrapped_type.name}Connection")
