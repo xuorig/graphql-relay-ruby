@@ -94,7 +94,7 @@ module GraphQL
 
       # Wrap nodes in {Edge}s so they expose cursors.
       def edges
-        @edges ||= paged_nodes.map { |item| Edge.new(item, self) }
+        @edges ||= paged_nodes.map { |item| Edge.new(item, cursor_from_node(item)) }
       end
 
       # Support the `pageInfo` field

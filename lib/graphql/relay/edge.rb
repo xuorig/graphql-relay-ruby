@@ -4,14 +4,10 @@ module GraphQL
     #
     # Wraps an object as a `node`, and exposes a connection-specific `cursor`.
     class Edge < GraphQL::ObjectType
-      attr_reader :node
-      def initialize(node, connection)
+      attr_reader :node, :cursor
+      def initialize(node, cursor)
         @node = node
-        @connection = connection
-      end
-
-      def cursor
-        @cursor ||= @connection.cursor_from_node(node)
+        @cursor = cursor
       end
 
       def self.create_type(wrapped_type)
